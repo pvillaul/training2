@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Product List</title>
+	</head>
+	<body>
+		<p>Hello <span th:text="${name}">guys</span>!</p>
+		<p th:text="${obj.code}"></p>
+		<p th:text="${obj.name}"></p>
+		<p th:text="${obj.description}"></p>
+		<p th:text="${obj.price}"></p>
+		<p th:text="${obj.showProdSum()}"></p>
+		<hr>
+		<ol>
+			<li th:each="prod : ${productos}" th:text="${prod}">NULL</li>
+		</ol>
+		<br>
+		<a th:href="@{/}">Return</a>
+	</body>
+</html>
