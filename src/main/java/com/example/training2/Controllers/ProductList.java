@@ -5,50 +5,70 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.training2.Models.Product;
+import com.example.training2.Models.Error;
 
 @Controller
+@ControllerAdvice
 public class ProductList {
-	//private Map<String, Product> productos = new HashMap<String, Product>();
+	private Product prod = new Product("12345","Coca-Cola","Bebida",5);
+	private Map<String, Product> productos = new HashMap<String, Product>() {{ put ("12345",prod); }};
 	
 	@GetMapping("/list")
 	public String list(Model model) {
-		Product prod = new Product("123-ABC","Lays","Patatas saladas",15);
-		model.addAttribute("name","World");
-		model.addAttribute("obj",prod);
+		model.addAttribute("productos",productos);
 		return "list";
 	}
 	
-	@GetMapping("/list")
-	public String sendProd(Model model) {
-		model.addAttribute("product", "pppp");
-		return "add";
-	}
-	
-	@PostMapping("/list")
-	public String readProd(@ModelAttribute Product prod) {
+	@GetMapping("/show/{id}")
+	public String show(@PathVariable String id, Model model) {
+		model.addAttribute("product",productos.get(id));
 		return "resume";
 	}
 	
-	@GetMapping("/add")
-	public String addProd(Model model) {
-		Product prod = new Product("123-ABC","Lays","Patatas saladas",15);
-		model.addAttribute("prod", prod);
-		return "add";
+	@GetMapping("/remove/{id}")
+	public String delete(@PathVariable String id, Model model) {
+		if(productos.containsKey(id)) {
+			productos.remove(id);
+			model.addAttribute("productos",productos);
+			return "redirect:/list";
+		} else {
+			Error error = new Error("Error al Eliminar","No se ha podido eliminar el producto selecionado","list","Atras");
+			model.addAttribute("error",error);
+			return "aviso";
+		}
 	}
 	
-	@PostMapping("/list/{id}")
-	public String showProd(@ModelAttribute Product prod) {
-		return "showProd";
+	@GetMapping("/addForm")
+	public String addProd(@ModelAttribute Product product) {
+		return "addForm";
 	}
 	
-	@GetMapping("/list/{id}")
-	public String path(@PathVariable String id) {
-		return id;
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String newProd(@ModelAttribute("product") Product product,BindingResult result, ModelMap model) {
+		if(!productos.containsKey(product.getCode())) {
+			model.addAttribute("code", product.getCode());
+	        model.addAttribute("name", product.getName());
+	        model.addAttribute("description", product.getDescription());
+	        model.addAttribute("price", product.getPrice());
+	        productos.put(product.getCode(), product);
+	        return "resume";
+		} else {
+			Error error = new Error("Error al Crear el Producto","El codigo introducido coincide con un producto existente","addForm","Volver al formulario");
+			model.addAttribute("error",error);
+			return "aviso";
+		}
 	}
 }

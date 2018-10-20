@@ -5,11 +5,11 @@
 	</head>
 	<body>
 		<h1>Product Result</h1>
-		<p th:text="'Code: ' + ${obj.code}"></p>
-		<p th:text="'Name: ' + ${obj.name}"></p>
-		<p th:text="'Description: ' + ${obj.description}"></p>
-		<p th:text="'Price: ' + ${obj.price}"></p>
+		<p th:text="'Code: ' + ${product.code}"></p>
+		<p th:text="'Name: ' + ${product.name}"></p>
+		<p th:text="'Description: ' + ${product.description}"></p>
+		<p th:text="'Price: ' + ${product.price}"></p>
 		<br>
-		<a th:href="@{/list}">Return</a>
+		<a th:href="@{/}">Return</a>
 	</body>
 </html>

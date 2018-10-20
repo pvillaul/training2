@@ -4,9 +4,9 @@
 		<title>Market</title>
 	</head>
 	<body>
-		<h1>Welcome to the Shop!</h1>
+		<h1 th:text="#{welcome}"></h1>
 		<br>
-		<a th:href="@{/list}">Product List</a>
-		<a th:href="@{/add}">New Product</a>
+		<a th:href="@{/list}" th:text="#{products}"></a><br>
+		<a th:href="@{/addForm}" th:text="#{new}"></a>
 	</body>
 </html>
