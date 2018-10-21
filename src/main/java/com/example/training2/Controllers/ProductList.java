@@ -18,7 +18,6 @@ import com.example.training2.Models.Product;
 import com.example.training2.Models.Error;
 
 @Controller
-@ControllerAdvice
 public class ProductList {
 	private Product prod = new Product("12345","Coca-Cola","Bebida",5);
 	private Map<String, Product> productos = new HashMap<String, Product>() {{ put ("12345",prod); }};

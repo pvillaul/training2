@@ -1,8 +1,6 @@
 package com.example.training2.Models;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class Product {
 	private String code;
 	private String name;
